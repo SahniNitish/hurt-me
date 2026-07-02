@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply min-h-[100dvh] bg-void;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply min-h-12 rounded-lg bg-blood px-4 py-3 font-display text-sm font-semibold uppercase tracking-wider text-white active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply min-h-12 rounded-lg border border-steel bg-coal px-4 py-3 font-medium text-white active:scale-[0.98];
+  }
+  .input-field {
+    @apply w-full min-h-12 rounded-lg border border-steel bg-coal px-4 py-3 text-white placeholder-ash outline-none focus:border-blood;
+  }
+  .card {
+    @apply rounded-xl border border-steel bg-coal p-4;
+  }
+}
