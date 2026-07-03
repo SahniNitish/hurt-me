@@ -1,6 +1,17 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 import type { AppSettings, BudgetEntry, SessionCheck, Task, Workout } from "./types";
 import { todayISO, uid } from "./types";
+import {
+  deleteBudgetEntryFromCloud,
+  deleteTaskFromCloud,
+  deleteWorkoutFromCloud,
+  deleteSessionChecksForWorkoutFromCloud,
+  pushBudgetEntryToCloud,
+  pushSessionCheckToCloud,
+  pushSettingsToCloud,
+  pushTaskToCloud,
+  pushWorkoutToCloud,
+} from "./cloudSync";
 
 interface HurtMeDB extends DBSchema {
   tasks: { key: string; value: Task };
@@ -37,11 +48,15 @@ export function getDB() {
         if (!db.objectStoreNames.contains("settings")) db.createObjectStore("settings", { keyPath: "id" });
       },
     }).then(async (db) => {
-      await seedIfNeeded(db);
       return db;
     });
   }
   return dbPromise;
+}
+
+export async function ensureSeeded() {
+  const db = await getDB();
+  await seedIfNeeded(db);
 }
 
 async function seedIfNeeded(db: IDBPDatabase<HurtMeDB>) {
@@ -100,6 +115,7 @@ export async function touchStreak(): Promise<number> {
   const next = s.lastActiveDate === y ? s.streakDays + 1 : 1;
   const updated = { ...s, streakDays: next, lastActiveDate: today };
   await db.put("settings", updated);
+  void pushSettingsToCloud(updated);
   return next;
 }
 
@@ -113,6 +129,7 @@ export async function saveSettings(partial: Partial<AppSettings>): Promise<AppSe
   const cur = await getSettings();
   const next = { ...cur, ...partial };
   await db.put("settings", next);
+  void pushSettingsToCloud(next);
   return next;
 }
 
@@ -125,11 +142,13 @@ export async function listTasks(): Promise<Task[]> {
 export async function saveTask(task: Task) {
   const db = await getDB();
   await db.put("tasks", task);
+  void pushTaskToCloud(task);
 }
 
 export async function deleteTask(id: string) {
   const db = await getDB();
   await db.delete("tasks", id);
+  void deleteTaskFromCloud(id);
 }
 
 // Workouts
@@ -141,15 +160,18 @@ export async function listWorkouts(): Promise<Workout[]> {
 export async function saveWorkout(w: Workout) {
   const db = await getDB();
   await db.put("workouts", w);
+  void pushWorkoutToCloud(w);
 }
 
 export async function deleteWorkout(id: string) {
   const db = await getDB();
   await db.delete("workouts", id);
+  void deleteWorkoutFromCloud(id);
   const all = await db.getAll("sessionChecks");
   for (const c of all) {
     if (c.workoutId === id) await db.delete("sessionChecks", c.id);
   }
+  void deleteSessionChecksForWorkoutFromCloud(id);
 }
 
 export async function getSessionChecks(workoutId: string): Promise<Record<string, boolean>> {
@@ -164,12 +186,14 @@ export async function getSessionChecks(workoutId: string): Promise<Record<string
 
 export async function setExerciseChecked(workoutId: string, exerciseId: string, checked: boolean) {
   const db = await getDB();
-  await db.put("sessionChecks", {
+  const row = {
     id: sessionCheckId(workoutId, exerciseId),
     workoutId,
     exerciseId,
     checked,
-  });
+  };
+  await db.put("sessionChecks", row);
+  void pushSessionCheckToCloud(row);
 }
 
 export async function resetWorkoutSession(workoutId: string) {
@@ -178,6 +202,7 @@ export async function resetWorkoutSession(workoutId: string) {
   for (const c of all) {
     if (c.workoutId === workoutId) await db.delete("sessionChecks", c.id);
   }
+  void deleteSessionChecksForWorkoutFromCloud(workoutId);
 }
 
 // Budget
@@ -189,9 +214,11 @@ export async function listBudgetEntries(): Promise<BudgetEntry[]> {
 export async function saveBudgetEntry(e: BudgetEntry) {
   const db = await getDB();
   await db.put("budgetEntries", e);
+  void pushBudgetEntryToCloud(e);
 }
 
 export async function deleteBudgetEntry(id: string) {
   const db = await getDB();
   await db.delete("budgetEntries", id);
+  void deleteBudgetEntryFromCloud(id);
 }
