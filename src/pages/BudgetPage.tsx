@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { deleteBudgetEntry, getSettings, listBudgetEntries, saveBudgetEntry, saveSettings } from "../db";
+import { deleteBudgetEntry, getSettings, importScotiaJune2026, listBudgetEntries, saveBudgetEntry, saveSettings } from "../db";
 import type { BudgetCategory, BudgetEntry } from "../types";
 import { BUDGET_CATEGORIES, monthKey, uid } from "../types";
 import { confirmDelete, useAsync } from "../utils";
@@ -17,6 +17,15 @@ export function BudgetPage() {
   const [note, setNote] = useState("");
   const [editing, setEditing] = useState<BudgetEntry | null>(null);
   const [capInput, setCapInput] = useState("");
+  const [importMsg, setImportMsg] = useState("");
+
+  async function runScotiaImport() {
+    const r = await importScotiaJune2026();
+    setViewMonth("2026-06");
+    setImportMsg(r.skipped ? "June Scotia already imported." : `Added ${r.added} transactions.`);
+    await reload();
+    await reloadSettings();
+  }
 
   const monthEntries = useMemo(
     () => (entries ?? []).filter((e) => e.date.startsWith(viewMonth)),
@@ -90,6 +99,13 @@ export function BudgetPage() {
             onChange={(e) => setViewMonth(e.target.value)}
           />
         </div>
+
+        {!settings?.scotiaJune2026Imported && (
+          <button type="button" className="btn-primary w-full text-sm" onClick={() => void runScotiaImport()}>
+            Import June Scotia statement (57 expenses + income)
+          </button>
+        )}
+        {importMsg && <p className="text-center text-sm text-sage">{importMsg}</p>}
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <div className="card">

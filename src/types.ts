@@ -66,6 +66,7 @@ export interface AppSettings {
   monthlyBudgetCap: number;
   streakDays: number;
   lastActiveDate: string;
+  scotiaJune2026Imported?: boolean;
 }
 
 export function uid(): string {

@@ -12,6 +12,7 @@ import {
   pushTaskToCloud,
   pushWorkoutToCloud,
 } from "./cloudSync";
+import { buildScotiaJuneEntries, SCOTIA_JUNE_IMPORT_TAG } from "./data/scotiaJuneImport";
 
 interface HurtMeDB extends DBSchema {
   tasks: { key: string; value: Task };
@@ -57,6 +58,7 @@ export function getDB() {
 export async function ensureSeeded() {
   const db = await getDB();
   await seedIfNeeded(db);
+  await importScotiaJune2026IfNeeded();
 }
 
 async function seedIfNeeded(db: IDBPDatabase<HurtMeDB>) {
@@ -221,4 +223,33 @@ export async function deleteBudgetEntry(id: string) {
   const db = await getDB();
   await db.delete("budgetEntries", id);
   void deleteBudgetEntryFromCloud(id);
+}
+
+/** Scotia statement May 18–Jun 17, 2026 — June rows only */
+export async function importScotiaJune2026(): Promise<{ added: number; skipped: boolean }> {
+  const settings = await getSettings();
+  if (settings.scotiaJune2026Imported) return { added: 0, skipped: true };
+
+  const existing = await listBudgetEntries();
+  const have = new Set(existing.map((e) => e.id));
+  const rows = buildScotiaJuneEntries();
+  let added = 0;
+  for (const row of rows) {
+    if (have.has(row.id)) continue;
+    await saveBudgetEntry(row);
+    added++;
+  }
+  await saveSettings({ scotiaJune2026Imported: true });
+  return { added, skipped: false };
+}
+
+async function importScotiaJune2026IfNeeded() {
+  const settings = await getSettings();
+  if (settings.scotiaJune2026Imported) return;
+  const any = (await listBudgetEntries()).some((e) => e.id.startsWith(SCOTIA_JUNE_IMPORT_TAG));
+  if (any) {
+    await saveSettings({ scotiaJune2026Imported: true });
+    return;
+  }
+  await importScotiaJune2026();
 }

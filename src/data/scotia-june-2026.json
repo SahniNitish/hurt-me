@@ -1,0 +1,443 @@
+[
+  {
+    "date": "2026-06-01",
+    "amount": 14.23,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: McDonald's New Minas"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 6.66,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons Moncton"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 10.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 10.53,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Sobeys Moncton"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 31.96,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Shoppers Drug Mart"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 24.88,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash Himalayan"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 12.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 7.1,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Shell"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 999.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-01",
+    "amount": 8.8,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Klarna"
+  },
+  {
+    "date": "2026-06-02",
+    "amount": 9.64,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons"
+  },
+  {
+    "date": "2026-06-02",
+    "amount": 13.89,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons"
+  },
+  {
+    "date": "2026-06-02",
+    "amount": 12.56,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Costco Moncton"
+  },
+  {
+    "date": "2026-06-02",
+    "amount": 299.97,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Costco Wholesale"
+  },
+  {
+    "date": "2026-06-03",
+    "amount": 112.0,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Bell Aliant"
+  },
+  {
+    "date": "2026-06-04",
+    "amount": 22.8,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Anthropic"
+  },
+  {
+    "date": "2026-06-04",
+    "amount": 50.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-05",
+    "amount": 1.85,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Usat"
+  },
+  {
+    "date": "2026-06-05",
+    "amount": 11.4,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Anthropic"
+  },
+  {
+    "date": "2026-06-05",
+    "amount": 11.4,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Anthropic"
+  },
+  {
+    "date": "2026-06-05",
+    "amount": 16.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: CNB ATM Moncton"
+  },
+  {
+    "date": "2026-06-05",
+    "amount": 13.79,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Villa Madina Dieppe"
+  },
+  {
+    "date": "2026-06-06",
+    "amount": 16.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: CNB Moncton"
+  },
+  {
+    "date": "2026-06-06",
+    "amount": 11.95,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: McDonald's Moncton"
+  },
+  {
+    "date": "2026-06-06",
+    "amount": 3.99,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Etsy Daughters Care"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 33.24,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Areum's Sweet Recipe"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 2.31,
+    "category": "Fun",
+    "type": "expense",
+    "note": "Scotia: Cineplex Moncton"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 32.45,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Instacart (Klarna)"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 105.79,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Remitly"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 10.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-11",
+    "amount": 10.11,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons"
+  },
+  {
+    "date": "2026-06-11",
+    "amount": 24.5,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: ABM withdrawal"
+  },
+  {
+    "date": "2026-06-11",
+    "amount": 2.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: INTERAC ABM fee"
+  },
+  {
+    "date": "2026-06-12",
+    "amount": 12.71,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Klarna Poparide"
+  },
+  {
+    "date": "2026-06-12",
+    "amount": 3.67,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons"
+  },
+  {
+    "date": "2026-06-12",
+    "amount": 12.28,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Dairy Queen"
+  },
+  {
+    "date": "2026-06-12",
+    "amount": 46.07,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Sobeys"
+  },
+  {
+    "date": "2026-06-12",
+    "amount": 21.77,
+    "category": "Fun",
+    "type": "expense",
+    "note": "Scotia: NB Liquor"
+  },
+  {
+    "date": "2026-06-13",
+    "amount": 43.74,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Walmart Dieppe"
+  },
+  {
+    "date": "2026-06-13",
+    "amount": 16.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: CNB Moncton"
+  },
+  {
+    "date": "2026-06-13",
+    "amount": 43.89,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Spice Shop Dieppe"
+  },
+  {
+    "date": "2026-06-13",
+    "amount": 28.58,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Blinkit"
+  },
+  {
+    "date": "2026-06-13",
+    "amount": 14.4,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Grok xAI"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 11.39,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Amazon Prime"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 67.19,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Madras Cafe"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 14.6,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Lost Found Moncton"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 50.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 11.12,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Canasian Market"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 21.47,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: McDonald's"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 2.27,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: YouTube Premium"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 58.21,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash Gujral's"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 27.93,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash Flavors Spot"
+  },
+  {
+    "date": "2026-06-15",
+    "amount": 8.8,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash (Klarna)"
+  },
+  {
+    "date": "2026-06-16",
+    "amount": 22.82,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash Gujral's"
+  },
+  {
+    "date": "2026-06-16",
+    "amount": 13.96,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash McDonald's"
+  },
+  {
+    "date": "2026-06-17",
+    "amount": 100.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "date": "2026-06-17",
+    "amount": 8.83,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons"
+  },
+  {
+    "date": "2026-06-17",
+    "amount": 13.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "date": "2026-06-02",
+    "amount": 200.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "date": "2026-06-03",
+    "amount": 200.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "date": "2026-06-04",
+    "amount": 5.7,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Borrowell payroll"
+  },
+  {
+    "date": "2026-06-08",
+    "amount": 100.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "date": "2026-06-11",
+    "amount": 1467.69,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: J.D. Irving payroll"
+  }
+]
