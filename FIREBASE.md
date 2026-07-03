@@ -20,3 +20,14 @@
 | Same anonymous user | Same data on Vercel + Render + phone (after auth works) |
 
 Writes go to IndexedDB first, then sync to Firestore in the background.
+
+### Vercel
+
+Production `VITE_FIREBASE_*` vars are set; **https://hurt-me.vercel.app** is deployed with Firebase baked in.
+
+### Render
+
+1. Generate import file: `./scripts/render-env-from-firebase.sh` → `render-env.upload` (gitignored).
+2. Dashboard → **hurt-me** → **Environment** → **Add from .env** → upload that file → **Save, rebuild, and deploy**.
+
+(`scripts/render-push-firebase-env.py` needs a valid Render API key; CLI token returned Unauthorized — dashboard import is the reliable path.)
