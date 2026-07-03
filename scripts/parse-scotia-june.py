@@ -1,16 +1,72 @@
 #!/usr/bin/env python3
-"""Parse Scotia statement text → June 2026 expense JSON for Hurt Me."""
+"""Scotia statement May 18–Jun 17, 2026 → Hurt Me budget JSON (May 19–31 + June)."""
 import json
-import re
 import subprocess
 from pathlib import Path
 
 PDF = Path("/home/nitish/.hermes/cache/documents/doc_4d31d2d137bb_Statements 2.pdf")
-text = subprocess.check_output(["pdftotext", str(PDF), "-"], text="utf-8", errors="replace")
+subprocess.check_output(["pdftotext", str(PDF), "-"])  # sanity
 
-# Manual curated June 1–17 expenses from statement (amounts verified against running balances)
-# Format: (month_day, amount, note)
-RAW = [
+MAY_EXP = [
+    ("2026-05-19", 66.51, "Transfer to credit card"),
+    ("2026-05-19", 19.14, "Osmows Lower Sackville"),
+    ("2026-05-19", 8.79, "Klarna"),
+    ("2026-05-19", 50.00, "Interac e-Transfer"),
+    ("2026-05-19", 30.00, "Transfer to credit card"),
+    ("2026-05-19", 16.48, "McDonald's Moncton"),
+    ("2026-05-19", 7.29, "Shoppers Drug Mart"),
+    ("2026-05-19", 23.00, "ABM withdrawal"),
+    ("2026-05-19", 2.00, "INTERAC ABM fee"),
+    ("2026-05-19", 18.27, "McDonald's Dieppe"),
+    ("2026-05-19", 20.00, "Interac e-Transfer"),
+    ("2026-05-20", 10.00, "Transfer to credit card"),
+    ("2026-05-20", 30.00, "Interac e-Transfer"),
+    ("2026-05-21", 1.00, "Move Scooter Rental"),
+    ("2026-05-21", 12.00, "Move Scooter Rental"),
+    ("2026-05-22", 1.40, "Comewel Limited"),
+    ("2026-05-22", 42.78, "DoorDash Mirchitando"),
+    ("2026-05-23", 34.56, "Klarna Walmart"),
+    ("2026-05-23", 33.15, "Klarna Walmart"),
+    ("2026-05-23", 4.32, "Comewel Limited"),
+    ("2026-05-23", 34.04, "Klarna"),
+    ("2026-05-23", 17.99, "Interac e-Transfer"),
+    ("2026-05-25", 15.96, "Tim Hortons Moncton"),
+    ("2026-05-25", 9.00, "Interac e-Transfer"),
+    ("2026-05-25", 34.00, "SkipTheDishes"),
+    ("2026-05-25", 21.09, "SkipTheDishes"),
+    ("2026-05-26", 6.50, "Tim Hortons Moncton"),
+    ("2026-05-26", 12.00, "Move Scooter Rental"),
+    ("2026-05-26", 23.00, "ABM withdrawal"),
+    ("2026-05-26", 2.00, "INTERAC ABM fee"),
+    ("2026-05-28", 176.51, "Bell Mobility"),
+    ("2026-05-28", 66.71, "Sobeys Moncton"),
+    ("2026-05-28", 10.00, "Transfer to credit card"),
+    ("2026-05-28", 2.35, "Etsy StitchEasyStudio"),
+    ("2026-05-28", 12.70, "Klarna"),
+    ("2026-05-29", 13.65, "Tim Hortons Moncton"),
+    ("2026-05-29", 121.98, "Besharam Bar Halifax"),
+    ("2026-05-30", 36.62, "Sq Momonepal Wolfville"),
+    ("2026-05-30", 10.78, "Healthy Lemon's Wolfville"),
+    ("2026-05-30", 18.67, "KFC Pizza Hut New Minas"),
+    ("2026-05-30", 36.27, "Victor Cuts Kentville"),
+    ("2026-05-30", 5.00, "Shell New Minas"),
+    ("2026-05-30", 59.00, "Interac e-Transfer"),
+]
+
+MAY_INC = [
+    ("2026-05-20", 174.96, "Irving Consumer Products"),
+    ("2026-05-21", 5.70, "Borrowell payroll"),
+    ("2026-05-23", 33.15, "Error correction Klarna Walmart"),
+    ("2026-05-23", 34.56, "Error correction Klarna Walmart"),
+    ("2026-05-23", 20.00, "Interac e-Transfer deposit"),
+    ("2026-05-25", 20.00, "Interac e-Transfer deposit"),
+    ("2026-05-25", 100.00, "Interac e-Transfer deposit"),
+    ("2026-05-26", 7.00, "Interac e-Transfer deposit"),
+    ("2026-05-28", 2192.88, "J.D. Irving payroll"),
+    ("2026-05-29", 5.70, "Borrowell payroll"),
+]
+
+JUN_EXP = [
     ("2026-06-01", 14.23, "McDonald's New Minas"),
     ("2026-06-01", 6.66, "Tim Hortons Moncton"),
     ("2026-06-01", 10.00, "Interac e-Transfer"),
@@ -71,7 +127,7 @@ RAW = [
     ("2026-06-17", 13.00, "Interac e-Transfer"),
 ]
 
-INCOME = [
+JUN_INC = [
     ("2026-06-02", 200.00, "Interac e-Transfer deposit"),
     ("2026-06-03", 200.00, "Interac e-Transfer deposit"),
     ("2026-06-04", 5.70, "Borrowell payroll"),
@@ -80,77 +136,98 @@ INCOME = [
 ]
 
 
-def categorize(note: str) -> str:
-    n = note.lower()
-    if any(x in n for x in ("doordash", "tim hortons", "mcdonald", "sobeys", "costco", "walmart", "dairy queen", "villa madina", "madras", "areum", "spice shop", "canasian", "shoppers", "instacart", "kfc", "pizza", "osmows", "skip")):
-        return "Food"
-    if any(x in n for x in ("shell", "poparide", "scooter")):
-        return "Transport"
-    if any(x in n for x in ("anthropic", "grok", "xai", "amazon prime", "youtube", "bell", "klarna") and "doordash" not in n):
-        if "klarna" in n and "doordash" not in n and "instacart" not in n and "poparide" not in n and "walmart" not in n:
-            return "Other"
-        return "Subscriptions"
-    if any(x in n for x in ("anthropic", "grok", "amazon prime", "youtube", "bell aliant", "bell mobility")):
-        return "Subscriptions"
-    if any(x in n for x in ("cineplex", "liquor", "bar")):
-        return "Fun"
-    if any(x in n for x in ("irving payroll", "borrowell", "payroll", "deposit")):
-        return "Other"
-    if any(x in n for x in ("etsy",)):
-        return "Other"
-    if any(x in n for x in ("remitly", "blinkit", "transfer", "interac", "abm", "cnb", "usat")):
-        return "Other"
-    return "Other"
-
-
 def cat_fix(note: str) -> str:
     n = note.lower()
-    if "doordash" in n or "klarna" in n and "doordash" in n:
+    if "doordash" in n or "skip" in n or "osmows" in n:
         return "Food"
-    if "anthropic" in n or "grok" in n or "xai" in n:
-        return "Subscriptions"
-    if "amazon prime" in n or "youtube" in n:
+    if "anthropic" in n or "grok" in n or "xai" in n or "amazon prime" in n or "youtube" in n:
         return "Subscriptions"
     if "bell" in n:
         return "Subscriptions"
-    if "instacart" in n:
+    if "instacart" in n or any(
+        x in n
+        for x in (
+            "tim hortons",
+            "mcdonald",
+            "sobeys",
+            "costco",
+            "walmart",
+            "dairy",
+            "villa",
+            "madras",
+            "areum",
+            "spice",
+            "canasian",
+            "shoppers",
+            "kfc",
+            "pizza",
+            "healthy lemon",
+            "momonepal",
+        )
+    ):
         return "Food"
-    if "poparide" in n:
+    if "shell" in n or "poparide" in n or "scooter" in n:
         return "Transport"
-    if "credit card" in n or "e-transfer" in n or "abm" in n or "cnb" in n or "remitly" in n or "blinkit" in n or "etsy" in n or "usat" in n:
-        return "Other"
-    if any(x in n for x in ("tim hortons", "mcdonald", "sobeys", "costco", "walmart", "dairy", "villa", "madras", "areum", "spice", "canasian", "shoppers")):
-        return "Food"
-    if "shell" in n:
-        return "Transport"
-    if "cineplex" in n or "liquor" in n:
+    if "cineplex" in n or "liquor" in n or "besharam" in n or "bar halifax" in n:
         return "Fun"
-    if "klarna" in n and "doordash" not in n:
+    if "victor cuts" in n:
+        return "Other"
+    if "credit card" in n or "e-transfer" in n or "abm" in n or "cnb" in n or "remitly" in n or "blinkit" in n or "etsy" in n or "usat" in n or "comewel" in n:
+        return "Other"
+    if "klarna" in n:
+        return "Other"
+    if "error correction" in n or "payroll" in n or "deposit" in n or "irving consumer" in n:
         return "Other"
     return "Other"
 
 
-entries = []
-for date, amt, note in RAW:
-    entries.append({
-        "date": date,
-        "amount": round(amt, 2),
-        "category": cat_fix(note),
-        "type": "expense",
-        "note": f"Scotia: {note}",
-    })
-for date, amt, note in INCOME:
-    entries.append({
-        "date": date,
-        "amount": round(amt, 2),
-        "category": "Other",
-        "type": "income",
-        "note": f"Scotia: {note}",
-    })
+def pack(tag: str, rows_exp, rows_inc):
+    out = []
+    i = 0
+    for date, amt, note in rows_exp:
+        out.append(
+            {
+                "id": f"{tag}-{date}-{i}",
+                "date": date,
+                "amount": round(amt, 2),
+                "category": cat_fix(note),
+                "type": "expense",
+                "note": f"Scotia: {note}",
+            }
+        )
+        i += 1
+    for date, amt, note in rows_inc:
+        out.append(
+            {
+                "id": f"{tag}-{date}-{i}",
+                "date": date,
+                "amount": round(amt, 2),
+                "category": "Other",
+                "type": "income",
+                "note": f"Scotia: {note}",
+            }
+        )
+        i += 1
+    return out
 
-out = Path("/home/nitish/hurt-me/src/data/scotia-june-2026.json")
-out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(json.dumps(entries, indent=2))
-exp = sum(e["amount"] for e in entries if e["type"] == "expense")
-inc = sum(e["amount"] for e in entries if e["type"] == "income")
-print(f"entries {len(entries)} expenses ${exp:.2f} income ${inc:.2f} net ${inc-exp:.2f}")
+
+def write(path: Path, rows):
+    path.write_text(json.dumps(rows, indent=2))
+    exp = sum(r["amount"] for r in rows if r["type"] == "expense")
+    inc = sum(r["amount"] for r in rows if r["type"] == "income")
+    print(path.name, len(rows), f"exp ${exp:.2f}", f"inc ${inc:.2f}")
+
+
+base = Path("/home/nitish/hurt-me/src/data")
+base.mkdir(parents=True, exist_ok=True)
+
+# June file keeps legacy ids (no id in json before - built in ts). Regenerate june without id in json for ts builder
+june = []
+for date, amt, note in JUN_EXP:
+    june.append({"date": date, "amount": round(amt, 2), "category": cat_fix(note), "type": "expense", "note": f"Scotia: {note}"})
+for date, amt, note in JUN_INC:
+    june.append({"date": date, "amount": round(amt, 2), "category": "Other", "type": "income", "note": f"Scotia: {note}"})
+write(base / "scotia-june-2026.json", june)
+
+may = pack("scotia-may-2026", MAY_EXP, MAY_INC)
+write(base / "scotia-may-2026.json", may)

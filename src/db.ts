@@ -12,7 +12,7 @@ import {
   pushTaskToCloud,
   pushWorkoutToCloud,
 } from "./cloudSync";
-import { buildScotiaJuneEntries, SCOTIA_JUNE_IMPORT_TAG } from "./data/scotiaJuneImport";
+import { buildScotiaJuneEntries, buildScotiaMayEntries, SCOTIA_JUNE_IMPORT_TAG, SCOTIA_MAY_IMPORT_TAG } from "./data/scotiaJuneImport";
 
 interface HurtMeDB extends DBSchema {
   tasks: { key: string; value: Task };
@@ -59,6 +59,7 @@ export async function ensureSeeded() {
   const db = await getDB();
   await seedIfNeeded(db);
   await importScotiaJune2026IfNeeded();
+  await importScotiaMay2026IfNeeded();
 }
 
 async function seedIfNeeded(db: IDBPDatabase<HurtMeDB>) {
@@ -252,4 +253,32 @@ async function importScotiaJune2026IfNeeded() {
     return;
   }
   await importScotiaJune2026();
+}
+
+export async function importScotiaMay2026(): Promise<{ added: number; skipped: boolean }> {
+  const settings = await getSettings();
+  if (settings.scotiaMay2026Imported) return { added: 0, skipped: true };
+
+  const existing = await listBudgetEntries();
+  const have = new Set(existing.map((e) => e.id));
+  const rows = buildScotiaMayEntries();
+  let added = 0;
+  for (const row of rows) {
+    if (have.has(row.id)) continue;
+    await saveBudgetEntry(row);
+    added++;
+  }
+  await saveSettings({ scotiaMay2026Imported: true });
+  return { added, skipped: false };
+}
+
+async function importScotiaMay2026IfNeeded() {
+  const settings = await getSettings();
+  if (settings.scotiaMay2026Imported) return;
+  const any = (await listBudgetEntries()).some((e) => e.id.startsWith(SCOTIA_MAY_IMPORT_TAG));
+  if (any) {
+    await saveSettings({ scotiaMay2026Imported: true });
+    return;
+  }
+  await importScotiaMay2026();
 }

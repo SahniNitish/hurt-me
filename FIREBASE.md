@@ -9,7 +9,8 @@
 
 1. [Enable billing](https://console.developers.google.com/billing/enable?project=hurt-me-app) on `hurt-me-app` (required for Firestore rules deploy on this project).
 2. [Authentication](https://console.firebase.google.com/project/hurt-me-app/authentication/providers) → **Anonymous** → **Enable**
-3. Deploy rules: `firebase deploy --only firestore:rules`
+3. Deploy rules: `firebase deploy --only firestore:rules`  
+   **Note:** In `firebase.json` the database id must be `default` (not `(default)`).
 
 ### How data is stored
 

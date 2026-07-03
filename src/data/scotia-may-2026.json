@@ -1,0 +1,426 @@
+[
+  {
+    "id": "scotia-may-2026-2026-05-19-0",
+    "date": "2026-05-19",
+    "amount": 66.51,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-1",
+    "date": "2026-05-19",
+    "amount": 19.14,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Osmows Lower Sackville"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-2",
+    "date": "2026-05-19",
+    "amount": 8.79,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Klarna"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-3",
+    "date": "2026-05-19",
+    "amount": 50.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-4",
+    "date": "2026-05-19",
+    "amount": 30.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-5",
+    "date": "2026-05-19",
+    "amount": 16.48,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: McDonald's Moncton"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-6",
+    "date": "2026-05-19",
+    "amount": 7.29,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Shoppers Drug Mart"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-7",
+    "date": "2026-05-19",
+    "amount": 23.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: ABM withdrawal"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-8",
+    "date": "2026-05-19",
+    "amount": 2.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: INTERAC ABM fee"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-9",
+    "date": "2026-05-19",
+    "amount": 18.27,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: McDonald's Dieppe"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-19-10",
+    "date": "2026-05-19",
+    "amount": 20.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-20-11",
+    "date": "2026-05-20",
+    "amount": 10.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-20-12",
+    "date": "2026-05-20",
+    "amount": 30.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-21-13",
+    "date": "2026-05-21",
+    "amount": 1.0,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Move Scooter Rental"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-21-14",
+    "date": "2026-05-21",
+    "amount": 12.0,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Move Scooter Rental"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-22-15",
+    "date": "2026-05-22",
+    "amount": 1.4,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Comewel Limited"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-22-16",
+    "date": "2026-05-22",
+    "amount": 42.78,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: DoorDash Mirchitando"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-17",
+    "date": "2026-05-23",
+    "amount": 34.56,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Klarna Walmart"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-18",
+    "date": "2026-05-23",
+    "amount": 33.15,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Klarna Walmart"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-19",
+    "date": "2026-05-23",
+    "amount": 4.32,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Comewel Limited"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-20",
+    "date": "2026-05-23",
+    "amount": 34.04,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Klarna"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-21",
+    "date": "2026-05-23",
+    "amount": 17.99,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-22",
+    "date": "2026-05-25",
+    "amount": 15.96,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons Moncton"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-23",
+    "date": "2026-05-25",
+    "amount": 9.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-24",
+    "date": "2026-05-25",
+    "amount": 34.0,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: SkipTheDishes"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-25",
+    "date": "2026-05-25",
+    "amount": 21.09,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: SkipTheDishes"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-26-26",
+    "date": "2026-05-26",
+    "amount": 6.5,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons Moncton"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-26-27",
+    "date": "2026-05-26",
+    "amount": 12.0,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Move Scooter Rental"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-26-28",
+    "date": "2026-05-26",
+    "amount": 23.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: ABM withdrawal"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-26-29",
+    "date": "2026-05-26",
+    "amount": 2.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: INTERAC ABM fee"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-30",
+    "date": "2026-05-28",
+    "amount": 176.51,
+    "category": "Subscriptions",
+    "type": "expense",
+    "note": "Scotia: Bell Mobility"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-31",
+    "date": "2026-05-28",
+    "amount": 66.71,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Sobeys Moncton"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-32",
+    "date": "2026-05-28",
+    "amount": 10.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Transfer to credit card"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-33",
+    "date": "2026-05-28",
+    "amount": 2.35,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Etsy StitchEasyStudio"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-34",
+    "date": "2026-05-28",
+    "amount": 12.7,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Klarna"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-29-35",
+    "date": "2026-05-29",
+    "amount": 13.65,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Tim Hortons Moncton"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-29-36",
+    "date": "2026-05-29",
+    "amount": 121.98,
+    "category": "Fun",
+    "type": "expense",
+    "note": "Scotia: Besharam Bar Halifax"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-37",
+    "date": "2026-05-30",
+    "amount": 36.62,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Sq Momonepal Wolfville"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-38",
+    "date": "2026-05-30",
+    "amount": 10.78,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: Healthy Lemon's Wolfville"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-39",
+    "date": "2026-05-30",
+    "amount": 18.67,
+    "category": "Food",
+    "type": "expense",
+    "note": "Scotia: KFC Pizza Hut New Minas"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-40",
+    "date": "2026-05-30",
+    "amount": 36.27,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Victor Cuts Kentville"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-41",
+    "date": "2026-05-30",
+    "amount": 5.0,
+    "category": "Transport",
+    "type": "expense",
+    "note": "Scotia: Shell New Minas"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-30-42",
+    "date": "2026-05-30",
+    "amount": 59.0,
+    "category": "Other",
+    "type": "expense",
+    "note": "Scotia: Interac e-Transfer"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-20-43",
+    "date": "2026-05-20",
+    "amount": 174.96,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Irving Consumer Products"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-21-44",
+    "date": "2026-05-21",
+    "amount": 5.7,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Borrowell payroll"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-45",
+    "date": "2026-05-23",
+    "amount": 33.15,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Error correction Klarna Walmart"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-46",
+    "date": "2026-05-23",
+    "amount": 34.56,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Error correction Klarna Walmart"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-23-47",
+    "date": "2026-05-23",
+    "amount": 20.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-48",
+    "date": "2026-05-25",
+    "amount": 20.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-25-49",
+    "date": "2026-05-25",
+    "amount": 100.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-26-50",
+    "date": "2026-05-26",
+    "amount": 7.0,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Interac e-Transfer deposit"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-28-51",
+    "date": "2026-05-28",
+    "amount": 2192.88,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: J.D. Irving payroll"
+  },
+  {
+    "id": "scotia-may-2026-2026-05-29-52",
+    "date": "2026-05-29",
+    "amount": 5.7,
+    "category": "Other",
+    "type": "income",
+    "note": "Scotia: Borrowell payroll"
+  }
+]

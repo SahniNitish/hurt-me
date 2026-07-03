@@ -67,6 +67,7 @@ export interface AppSettings {
   streakDays: number;
   lastActiveDate: string;
   scotiaJune2026Imported?: boolean;
+  scotiaMay2026Imported?: boolean;
 }
 
 export function uid(): string {
