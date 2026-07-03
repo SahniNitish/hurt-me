@@ -155,3 +155,16 @@ export async function pushAllLocalToCloud(): Promise<void> {
     await Promise.all(rows.map((row) => setDoc(userDoc(name, (row as { id: string }).id), row)));
   }
 }
+
+export type CloudSyncStatus = "local-only" | "cloud-connected" | "cloud-error";
+
+/** For UI: local IndexedDB is always used; cloud = Firestore after anonymous auth. */
+export async function getCloudSyncStatus(): Promise<CloudSyncStatus> {
+  if (!isFirebaseConfigured()) return "local-only";
+  try {
+    const user = await initCloudAuth();
+    return user ? "cloud-connected" : "cloud-error";
+  } catch {
+    return "cloud-error";
+  }
+}
