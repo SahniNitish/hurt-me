@@ -24,6 +24,10 @@ export interface Workout {
   name: string;
   exercises: Exercise[];
   createdAt: string;
+  /** 1–30 for built-in programs */
+  programDay?: number;
+  programId?: string;
+  programNote?: string;
 }
 
 export interface SessionCheck {
@@ -69,6 +73,7 @@ export interface AppSettings {
   scotiaJune2026Imported?: boolean;
   scotiaMay2026Imported?: boolean;
   mobileScreensJun2026Imported?: boolean;
+  plan30DaysImported?: boolean;
 }
 
 export function uid(): string {

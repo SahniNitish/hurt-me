@@ -11,11 +11,14 @@ import { useEffect, useState } from "react";
 import {
   deleteWorkout,
   getSessionChecks,
+  getSettings,
+  importPlan30Days,
   listWorkouts,
   resetWorkoutSession,
   saveWorkout,
   setExerciseChecked,
 } from "../db";
+import { PLAN_30_ID, PLAN_30_SUMMARY } from "../data/plan30Days";
 import type { Exercise, Workout } from "../types";
 import { uid } from "../types";
 import { confirmDelete, useAsync, youtubeEmbedUrl, youtubeWatchUrl } from "../utils";
@@ -23,10 +26,25 @@ import { HomeHeader } from "../components/HomeHeader";
 
 export function WorkoutsPage() {
   const { data: workouts, reload } = useAsync(listWorkouts, []);
+  const { data: settings, reload: reloadSettings } = useAsync(getSettings, []);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [showForm, setShowForm] = useState(false);
   const [draftName, setDraftName] = useState("");
+  const [planMsg, setPlanMsg] = useState("");
+
+  const planDays = (workouts ?? [])
+    .filter((w) => w.programId === PLAN_30_ID)
+    .sort((a, b) => (a.programDay ?? 0) - (b.programDay ?? 0));
+  const customDays = (workouts ?? []).filter((w) => w.programId !== PLAN_30_ID);
+
+  async function installPlan() {
+    const r = await importPlan30Days();
+    setPlanMsg(r.skipped ? "30-day plan already installed." : `Added ${r.added} workout days.`);
+    await reload();
+    await reloadSettings();
+    if (r.added > 0) setSelectedId("plan30-day01");
+  }
 
   const selected = workouts?.find((w) => w.id === selectedId) ?? null;
 
@@ -77,8 +95,19 @@ export function WorkoutsPage() {
 
   return (
     <div className="pb-28">
-      <HomeHeader subtitle="Lift heavy. Log it. Repeat." />
+      <HomeHeader subtitle="30-day muscle + fat loss, or your own days." />
       <div className="mx-auto max-w-lg space-y-4 px-4 py-4">
+        {!settings?.plan30DaysImported && planDays.length === 0 ? (
+          <div className="card space-y-3 border-ember/40">
+            <p className="font-display text-lg font-semibold uppercase text-ember">30-day program</p>
+            <p className="text-sm text-ash">{PLAN_30_SUMMARY}</p>
+            <button type="button" className="btn-primary w-full" onClick={() => void installPlan()}>
+              Install 30-day plan (Day 1–30)
+            </button>
+          </div>
+        ) : null}
+        {planMsg ? <p className="text-center text-sm text-sage">{planMsg}</p> : null}
+
         <button type="button" className="btn-primary w-full" onClick={() => setShowForm(true)}>
           <Plus className="mr-2 inline h-5 w-5" />
           New workout day
@@ -102,34 +131,55 @@ export function WorkoutsPage() {
           </div>
         ) : null}
 
-        <ul className="space-y-2">
-          {(workouts ?? []).map((w) => (
-            <li key={w.id}>
-              <div className="card flex items-center gap-3">
-                <button
-                  type="button"
-                  className="min-h-12 flex-1 text-left font-display text-xl font-semibold uppercase"
-                  onClick={() => setSelectedId(w.id)}
-                >
-                  {w.name}
-                  <p className="mt-0.5 font-body text-xs font-normal normal-case text-ash">
-                    {w.exercises.length} exercises
-                  </p>
-                </button>
-                <button
-                  type="button"
-                  className="rounded-lg p-3 text-blood"
-                  onClick={() => void removeWorkout(w)}
-                  aria-label="Delete workout"
-                >
-                  <Trash2 className="h-5 w-5" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {planDays.length > 0 ? (
+          <>
+            <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-ember">30-day plan</h2>
+            <ul className="space-y-2">
+              {planDays.map((w) => (
+                <WorkoutListItem key={w.id} w={w} onOpen={() => setSelectedId(w.id)} onDelete={() => void removeWorkout(w)} />
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        {customDays.length > 0 ? (
+          <>
+            <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-ash">Your workouts</h2>
+            <ul className="space-y-2">
+              {customDays.map((w) => (
+                <WorkoutListItem key={w.id} w={w} onOpen={() => setSelectedId(w.id)} onDelete={() => void removeWorkout(w)} />
+              ))}
+            </ul>
+          </>
+        ) : null}
       </div>
     </div>
+  );
+}
+
+function WorkoutListItem({
+  w,
+  onOpen,
+  onDelete,
+}: {
+  w: Workout;
+  onOpen: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <li>
+      <div className="card flex items-center gap-3">
+        <button type="button" className="min-h-12 flex-1 text-left font-display text-xl font-semibold uppercase" onClick={onOpen}>
+          {w.name}
+          <p className="mt-0.5 font-body text-xs font-normal normal-case text-ash">
+            {w.programNote ?? `${w.exercises.length} exercises`}
+          </p>
+        </button>
+        <button type="button" className="rounded-lg p-3 text-blood" onClick={onDelete} aria-label="Delete workout">
+          <Trash2 className="h-5 w-5" />
+        </button>
+      </div>
+    </li>
   );
 }
 
@@ -189,6 +239,7 @@ function WorkoutDetail({
           <ChevronLeft className="h-5 w-5" /> Back
         </button>
         <h1 className="font-display text-3xl font-bold uppercase">{workout.name}</h1>
+        {workout.programNote ? <p className="text-sm text-ember">{workout.programNote}</p> : null}
         <p className="text-sm text-ash">
           Session: {done}/{workout.exercises.length} done
         </p>

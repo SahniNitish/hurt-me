@@ -13,6 +13,7 @@ import {
   pushWorkoutToCloud,
 } from "./cloudSync";
 import { buildScotiaJuneEntries, buildScotiaMayEntries, buildMobileScreenEntries, SCOTIA_JUNE_IMPORT_TAG, SCOTIA_MAY_IMPORT_TAG, MOBILE_SCREEN_IMPORT_TAG } from "./data/scotiaJuneImport";
+import { build30DayPlanWorkouts, PLAN_30_ID } from "./data/plan30Days";
 
 interface HurtMeDB extends DBSchema {
   tasks: { key: string; value: Task };
@@ -61,6 +62,7 @@ export async function ensureSeeded() {
   await importScotiaJune2026IfNeeded();
   await importScotiaMay2026IfNeeded();
   await importMobileScreens2026IfNeeded();
+  await importPlan30DaysIfNeeded();
 }
 
 async function seedIfNeeded(db: IDBPDatabase<HurtMeDB>) {
@@ -310,4 +312,32 @@ async function importMobileScreens2026IfNeeded() {
     return;
   }
   await importMobileScreens2026();
+}
+
+export async function importPlan30Days(): Promise<{ added: number; skipped: boolean }> {
+  const settings = await getSettings();
+  if (settings.plan30DaysImported) return { added: 0, skipped: true };
+
+  const existing = await listWorkouts();
+  const have = new Set(existing.map((w) => w.id));
+  const plan = build30DayPlanWorkouts();
+  let added = 0;
+  for (const w of plan) {
+    if (have.has(w.id)) continue;
+    await saveWorkout(w);
+    added++;
+  }
+  await saveSettings({ plan30DaysImported: true });
+  return { added, skipped: false };
+}
+
+async function importPlan30DaysIfNeeded() {
+  const settings = await getSettings();
+  if (settings.plan30DaysImported) return;
+  const any = (await listWorkouts()).some((w) => w.programId === PLAN_30_ID);
+  if (any) {
+    await saveSettings({ plan30DaysImported: true });
+    return;
+  }
+  await importPlan30Days();
 }
