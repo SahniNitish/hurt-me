@@ -1,11 +1,22 @@
 import {
+  GoogleAuthProvider,
+  getRedirectResult,
+  linkWithPopup,
+  linkWithRedirect,
+  onAuthStateChanged,
+  signInAnonymously,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+  type User,
+} from "firebase/auth";
+import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   setDoc,
-  deleteDoc,
 } from "firebase/firestore";
-import { onAuthStateChanged, signInAnonymously, type User } from "firebase/auth";
 import type { AppSettings, BudgetEntry, SessionCheck, Task, Workout } from "./types";
 import { getFirebaseAuth, getFirestoreDb, isFirebaseConfigured } from "./firebase";
 
@@ -15,38 +26,139 @@ type CollectionName = (typeof COLLECTIONS)[number];
 let currentUser: User | null = null;
 let authReady: Promise<User | null> | null = null;
 let pulledOnce = false;
+let followUpListener = false;
+
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 export function getCloudUserId(): string | null {
   return currentUser?.uid ?? null;
+}
+
+export function getAuthUser(): User | null {
+  return currentUser;
+}
+
+export function isGoogleSignedIn(): boolean {
+  return Boolean(currentUser && !currentUser.isAnonymous);
+}
+
+function isMobileOrStandalone(): boolean {
+  if (typeof window === "undefined") return false;
+  const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+  const narrow = window.matchMedia("(max-width: 768px)").matches;
+  return standalone || narrow;
+}
+
+export async function completeGoogleRedirectIfNeeded(): Promise<void> {
+  if (!isFirebaseConfigured()) return;
+  const auth = getFirebaseAuth();
+  try {
+    const result = await getRedirectResult(auth);
+    if (result?.user) {
+      currentUser = result.user;
+      pulledOnce = false;
+    }
+  } catch (err) {
+    console.warn("[hurt-me] Google redirect sign-in failed", err);
+  }
+}
+
+function attachAuthFollowUpListener() {
+  if (followUpListener || !isFirebaseConfigured()) return;
+  followUpListener = true;
+  const auth = getFirebaseAuth();
+  onAuthStateChanged(auth, async (user) => {
+    const prevUid = currentUser?.uid ?? null;
+    currentUser = user;
+    if (user?.uid && prevUid && user.uid !== prevUid) {
+      pulledOnce = false;
+      await pullCloudIntoIndexedDB();
+      await pushAllLocalToCloud();
+    }
+    window.dispatchEvent(new CustomEvent("hurt-me-auth-changed", { detail: user }));
+  });
 }
 
 export async function initCloudAuth(): Promise<User | null> {
   if (!isFirebaseConfigured()) return null;
   if (authReady) return authReady;
 
-  authReady = new Promise((resolve) => {
+  authReady = (async () => {
+    await completeGoogleRedirectIfNeeded();
     const auth = getFirebaseAuth();
-    const unsub = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        unsub();
-        resolve(user);
-        return;
-      }
-      try {
-        const cred = await signInAnonymously(auth);
-        currentUser = cred.user;
-        unsub();
-        resolve(cred.user);
-      } catch (err) {
-        console.warn("[hurt-me] Firebase anonymous auth failed — enable Anonymous in Firebase Console → Authentication", err);
-        unsub();
-        resolve(null);
-      }
+
+    const user = await new Promise<User | null>((resolve) => {
+      const unsub = onAuthStateChanged(auth, async (existing) => {
+        if (existing) {
+          currentUser = existing;
+          unsub();
+          resolve(existing);
+          return;
+        }
+        try {
+          const cred = await signInAnonymously(auth);
+          currentUser = cred.user;
+          unsub();
+          resolve(cred.user);
+        } catch (err) {
+          console.warn(
+            "[hurt-me] Firebase anonymous auth failed — enable Anonymous in Firebase Console → Authentication",
+            err,
+          );
+          unsub();
+          resolve(null);
+        }
+      });
     });
-  });
+
+    attachAuthFollowUpListener();
+    return user;
+  })();
 
   return authReady;
+}
+
+export async function signInWithGoogle(): Promise<void> {
+  if (!isFirebaseConfigured()) throw new Error("Firebase not configured");
+  const auth = getFirebaseAuth();
+  await initCloudAuth();
+  const user = auth.currentUser;
+  const redirect = isMobileOrStandalone();
+
+  if (user?.isAnonymous) {
+    if (redirect) await linkWithRedirect(user, googleProvider);
+    else await linkWithPopup(user, googleProvider);
+  } else if (redirect) {
+    await signInWithRedirect(auth, googleProvider);
+  } else {
+    await signInWithPopup(auth, googleProvider);
+  }
+
+  if (!redirect && auth.currentUser) {
+    currentUser = auth.currentUser;
+    pulledOnce = false;
+    await pullCloudIntoIndexedDB();
+    await pushAllLocalToCloud();
+  }
+}
+
+export async function signOutFromGoogle(): Promise<void> {
+  if (!isFirebaseConfigured()) return;
+  const auth = getFirebaseAuth();
+  await signOut(auth);
+  pulledOnce = false;
+  try {
+    const cred = await signInAnonymously(auth);
+    currentUser = cred.user;
+    await pushAllLocalToCloud();
+  } catch (err) {
+    console.warn("[hurt-me] Could not restore anonymous session after sign-out", err);
+    currentUser = null;
+  }
+  window.dispatchEvent(new CustomEvent("hurt-me-auth-changed", { detail: currentUser }));
 }
 
 function userCollection(name: CollectionName) {
@@ -156,14 +268,14 @@ export async function pushAllLocalToCloud(): Promise<void> {
   }
 }
 
-export type CloudSyncStatus = "local-only" | "cloud-connected" | "cloud-error";
+export type CloudSyncStatus = "local-only" | "cloud-anonymous" | "cloud-google" | "cloud-error";
 
-/** For UI: local IndexedDB is always used; cloud = Firestore after anonymous auth. */
 export async function getCloudSyncStatus(): Promise<CloudSyncStatus> {
   if (!isFirebaseConfigured()) return "local-only";
   try {
     const user = await initCloudAuth();
-    return user ? "cloud-connected" : "cloud-error";
+    if (!user) return "cloud-error";
+    return user.isAnonymous ? "cloud-anonymous" : "cloud-google";
   } catch {
     return "cloud-error";
   }

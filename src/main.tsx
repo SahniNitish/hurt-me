@@ -4,12 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import { registerSW } from "virtual:pwa-register";
 import App from "./App";
 import "./index.css";
-import { initCloudAuth, pullCloudIntoIndexedDB, pushAllLocalToCloud } from "./cloudSync";
+import { initCloudAuth, pullCloudIntoIndexedDB, pushAllLocalToCloud, completeGoogleRedirectIfNeeded } from "./cloudSync";
 import { ensureSeeded } from "./db";
 
 registerSW({ immediate: true });
 
 async function boot() {
+  await completeGoogleRedirectIfNeeded();
   await initCloudAuth();
   await pullCloudIntoIndexedDB();
   await ensureSeeded();

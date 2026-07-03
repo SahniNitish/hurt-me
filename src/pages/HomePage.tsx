@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Dumbbell, ListTodo, Wallet } from "lucide-react";
 import { HomeHeader } from "../components/HomeHeader";
+import { GoogleAuthCard } from "../components/GoogleAuthCard";
 
 const links = [
   { to: "/todo", label: "To-Do", desc: "Daily tasks & progress", icon: ListTodo, color: "text-blood" },
@@ -13,9 +14,10 @@ export function HomePage() {
     <div className="pb-28">
       <HomeHeader subtitle="Discipline dashboard. Phone-first. No excuses." />
       <div className="mx-auto max-w-lg space-y-4 px-4 py-6">
+        <GoogleAuthCard />
         <p className="text-sm leading-relaxed text-ash">
-          Everything stays on this device in IndexedDB. Install as a PWA for offline access. YouTube loads only when you
-          open a demo.
+          Data saves on this device first (IndexedDB), then backs up to Firebase when cloud is on. Install as a PWA for
+          offline use.
         </p>
         <div className="space-y-3">
           {links.map(({ to, label, desc, icon: Icon, color }) => (

@@ -9,7 +9,10 @@ export function HomeHeader({ subtitle }: { subtitle?: string }) {
 
   useEffect(() => {
     void touchStreak().then(setStreak);
-    void getCloudSyncStatus().then(setCloud);
+    const load = () => void getCloudSyncStatus().then(setCloud);
+    load();
+    window.addEventListener("hurt-me-auth-changed", load);
+    return () => window.removeEventListener("hurt-me-auth-changed", load);
   }, []);
 
   return (
@@ -26,10 +29,15 @@ export function HomeHeader({ subtitle }: { subtitle?: string }) {
           <p className="mt-2 flex items-center gap-1.5 text-[11px] text-ash">
             {cloud === "loading" ? (
               <span>DB: local…</span>
-            ) : cloud === "cloud-connected" ? (
+            ) : cloud === "cloud-google" ? (
               <>
                 <Cloud className="h-3.5 w-3.5 text-sage" aria-hidden />
-                <span className="text-sage">IndexedDB + Firestore synced</span>
+                <span className="text-sage">Google account · Firestore synced</span>
+              </>
+            ) : cloud === "cloud-anonymous" ? (
+              <>
+                <Cloud className="h-3.5 w-3.5 text-ember" aria-hidden />
+                <span className="text-ember">Guest cloud — sign in with Google to sync devices</span>
               </>
             ) : cloud === "cloud-error" ? (
               <>
