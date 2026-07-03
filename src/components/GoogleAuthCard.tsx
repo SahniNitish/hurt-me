@@ -1,6 +1,7 @@
 import { LogIn, LogOut } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { isFirebaseConfigured } from "../firebase";
+import { formatFirebaseAuthError, FIREBASE_AUTH_CONSOLE_URL } from "../firebaseAuthErrors";
 import {
   getAuthUser,
   getCloudSyncStatus,
@@ -55,7 +56,7 @@ export function GoogleAuthCard() {
       await pushAllLocalToCloud();
       await refresh();
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Sign-in failed");
+      setErr(formatFirebaseAuthError(e));
     } finally {
       setBusy(false);
     }
@@ -106,7 +107,21 @@ export function GoogleAuthCard() {
         </button>
       )}
 
-      {err ? <p className="text-xs text-blood">{err}</p> : null}
+      {err ? (
+        <div className="space-y-2">
+          <p className="text-xs leading-relaxed text-blood">{err}</p>
+          {err.includes("hurt-me-app") ? (
+            <a
+              href={FIREBASE_AUTH_CONSOLE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-ember underline"
+            >
+              Open Firebase Authentication setup →
+            </a>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -5,6 +5,19 @@
 - **CLI:** logged in as `nitishsahni884@gmail.com`
 - **Local:** copy `.env.example` → `.env` and fill from `firebase apps:sdkconfig WEB <appId> --project hurt-me-app`
 
+### Fix `auth/configuration-not-found`
+
+This means **Authentication was never turned on** (or providers are all off) for `hurt-me-app` — not a bug in the app.
+
+1. Open [Authentication](https://console.firebase.google.com/project/hurt-me-app/authentication) — if you see **Get started**, click it.
+2. **Sign-in method** tab:
+   - **Anonymous** → Enable
+   - **Google** → Enable → pick a support email → Save
+3. **Settings** → **Authorized domains** → ensure `localhost`, `hurt-me.vercel.app`, `hurt-me.onrender.com` are listed.
+4. Wait ~1 minute, then hard-refresh Hurt Me and tap **Continue with Google** again.
+
+If it still fails: [Google Cloud Console](https://console.cloud.google.com/apis/library/identitytoolkit.googleapis.com?project=hurt-me-app) → ensure **Identity Toolkit API** is **Enabled**.
+
 ### One-time in Firebase Console
 
 1. [Enable billing](https://console.developers.google.com/billing/enable?project=hurt-me-app) on `hurt-me-app` (required for Firestore rules deploy on this project).
