@@ -1,6 +1,6 @@
 import { Pencil, Plus, Trash2, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { deleteBudgetEntry, getSettings, importScotiaJune2026, importScotiaMay2026, listBudgetEntries, saveBudgetEntry, saveSettings } from "../db";
+import { deleteBudgetEntry, getSettings, importScotiaJune2026, importScotiaMay2026, importMobileScreens2026, listBudgetEntries, saveBudgetEntry, saveSettings } from "../db";
 import type { BudgetCategory, BudgetEntry } from "../types";
 import { BUDGET_CATEGORIES, monthKey, uid } from "../types";
 import { confirmDelete, useAsync } from "../utils";
@@ -22,10 +22,12 @@ export function BudgetPage() {
   async function runScotiaImport() {
     const j = await importScotiaJune2026();
     const m = await importScotiaMay2026();
+    const mob = await importMobileScreens2026();
     setViewMonth("2026-06");
     const parts = [];
-    if (!j.skipped) parts.push(`June: ${j.added}`);
-    if (!m.skipped) parts.push(`May: ${m.added}`);
+    if (!j.skipped) parts.push(`June PDF: ${j.added}`);
+    if (!m.skipped) parts.push(`May PDF: ${m.added}`);
+    if (!mob.skipped) parts.push(`App screenshots: ${mob.added}`);
     setImportMsg(parts.length ? `Added ${parts.join(", ")} transactions.` : "Scotia May/June already imported.");
     await reload();
     await reloadSettings();
@@ -104,9 +106,11 @@ export function BudgetPage() {
           />
         </div>
 
-        {(!settings?.scotiaJune2026Imported || !settings?.scotiaMay2026Imported) && (
+        {(!settings?.scotiaJune2026Imported ||
+          !settings?.scotiaMay2026Imported ||
+          !settings?.mobileScreensJun2026Imported) && (
           <button type="button" className="btn-primary w-full text-sm" onClick={() => void runScotiaImport()}>
-            Import Scotia statement (May 19–31 + June)
+            Import Scotia (PDF + app screenshots)
           </button>
         )}
         {importMsg && <p className="text-center text-sm text-sage">{importMsg}</p>}

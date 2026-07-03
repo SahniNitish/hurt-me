@@ -12,7 +12,7 @@ import {
   pushTaskToCloud,
   pushWorkoutToCloud,
 } from "./cloudSync";
-import { buildScotiaJuneEntries, buildScotiaMayEntries, SCOTIA_JUNE_IMPORT_TAG, SCOTIA_MAY_IMPORT_TAG } from "./data/scotiaJuneImport";
+import { buildScotiaJuneEntries, buildScotiaMayEntries, buildMobileScreenEntries, SCOTIA_JUNE_IMPORT_TAG, SCOTIA_MAY_IMPORT_TAG, MOBILE_SCREEN_IMPORT_TAG } from "./data/scotiaJuneImport";
 
 interface HurtMeDB extends DBSchema {
   tasks: { key: string; value: Task };
@@ -60,6 +60,7 @@ export async function ensureSeeded() {
   await seedIfNeeded(db);
   await importScotiaJune2026IfNeeded();
   await importScotiaMay2026IfNeeded();
+  await importMobileScreens2026IfNeeded();
 }
 
 async function seedIfNeeded(db: IDBPDatabase<HurtMeDB>) {
@@ -281,4 +282,32 @@ async function importScotiaMay2026IfNeeded() {
     return;
   }
   await importScotiaMay2026();
+}
+
+export async function importMobileScreens2026(): Promise<{ added: number; skipped: boolean }> {
+  const settings = await getSettings();
+  if (settings.mobileScreensJun2026Imported) return { added: 0, skipped: true };
+
+  const existing = await listBudgetEntries();
+  const have = new Set(existing.map((e) => e.id));
+  const rows = buildMobileScreenEntries();
+  let added = 0;
+  for (const row of rows) {
+    if (have.has(row.id)) continue;
+    await saveBudgetEntry(row);
+    added++;
+  }
+  await saveSettings({ mobileScreensJun2026Imported: true });
+  return { added, skipped: false };
+}
+
+async function importMobileScreens2026IfNeeded() {
+  const settings = await getSettings();
+  if (settings.mobileScreensJun2026Imported) return;
+  const any = (await listBudgetEntries()).some((e) => e.id.startsWith(MOBILE_SCREEN_IMPORT_TAG));
+  if (any) {
+    await saveSettings({ mobileScreensJun2026Imported: true });
+    return;
+  }
+  await importMobileScreens2026();
 }

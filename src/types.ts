@@ -68,6 +68,7 @@ export interface AppSettings {
   lastActiveDate: string;
   scotiaJune2026Imported?: boolean;
   scotiaMay2026Imported?: boolean;
+  mobileScreensJun2026Imported?: boolean;
 }
 
 export function uid(): string {
