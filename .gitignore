@@ -7,4 +7,4 @@ dist
 .env
 .firebase-web-config.json
 render-env.upload
-.env*
+!.env.example

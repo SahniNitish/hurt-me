@@ -1,3 +1,7 @@
+/**
+ * Firebase web SDK (same as Console snippet — values come from Vite env at build time).
+ * @see https://firebase.google.com/docs/web/setup
+ */
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";

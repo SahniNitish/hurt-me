@@ -3,7 +3,20 @@
 
 - **Project:** `hurt-me-app` (Firestore `nam5`, rules in `firestore.rules`)
 - **CLI:** logged in as `nitishsahni884@gmail.com`
-- **Local:** copy `.env.example` → `.env` and fill from `firebase apps:sdkconfig WEB <appId> --project hurt-me-app`
+- **Local:** copy `.env.example` → `.env` and paste the **same** `firebaseConfig` from Firebase Console (all `VITE_FIREBASE_*` keys).
+
+Your Console snippet maps like this:
+
+| Console field | `.env` variable |
+|---------------|-----------------|
+| `apiKey` | `VITE_FIREBASE_API_KEY` |
+| `authDomain` | `VITE_FIREBASE_AUTH_DOMAIN` |
+| `projectId` | `VITE_FIREBASE_PROJECT_ID` |
+| `storageBucket` | `VITE_FIREBASE_STORAGE_BUCKET` |
+| `messagingSenderId` | `VITE_FIREBASE_MESSAGING_SENDER_ID` |
+| `appId` | `VITE_FIREBASE_APP_ID` |
+
+The app already calls `initializeApp()` in `src/firebase.ts` — you do **not** paste the snippet into `main.tsx`; only env vars matter at build time.
 
 ### Fix `auth/configuration-not-found`
 
