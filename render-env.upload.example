@@ -1,0 +1,8 @@
+# Import this file in Render Dashboard → hurt-me → Environment → "Add from .env"
+# (File is gitignored — generated locally from Firebase SDK config)
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=hurt-me-app.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=hurt-me-app
+VITE_FIREBASE_STORAGE_BUCKET=hurt-me-app.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=687032279212
+VITE_FIREBASE_APP_ID=1:687032279212:web:2ef2e689f5689063c47f09

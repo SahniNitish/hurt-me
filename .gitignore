@@ -6,3 +6,5 @@ dist
 .vercel
 .env
 .firebase-web-config.json
+render-env.upload
+.env*
